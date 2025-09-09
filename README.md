@@ -1,50 +1,24 @@
-# Welcome to your Expo app 👋
+# Legend List Minimal Reproduction of Issue
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+This repo feautures an issue that I've noticed in the latest version of LegendList, which may be related. It is described below.
 
-## Get started
+## Overlapping/Incomplete Content On Render
+### Description
 
-1. Install dependencies
+On some renders, you'll notice one of three things. Either overlapping content, an incomplete list, or both. The issue seems to resolve the moment the user scrolls.
 
-   ```bash
-   npm install
-   ```
+![An example of the intial load looking incomplete and featuring overlapping elements. It goes away when scrolling starts.](/assets/images/issues/ll_overlapping_and_incomplete.mp4)
 
-2. Start the app
+![Screenshot of the same phenomenon](/assets/images/issues/ll_overlap_example_1.png)
 
-   ```bash
-   npx expo start
-   ```
+### How to reproduce
 
-In the output, you'll find options to open the app in a
+Without changing any of the config values, reload the simulator repeatedly by pressing R in your terminal. You will not reload 10 times before seeing an occurence of the issue.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+This seems to happen when `MIN_HEADER_INDICES_SPACING` is set such that headers appear fairly regularly, but not close enough that two headers are simultaneously rendered when the list is initially loaded. 15 is a reliable place to start.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+```typescript
+const MIN_HEADER_INDICES_SPACING = 15
 ```
+With sticky headers further apart, or none at all, the issue seems to stop.
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
